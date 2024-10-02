@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         int minor = Utilidades.bytesToIntOK(tib.getMinor());
 
         // Actualiza el TextView con la medición
-        String medicion = "Minor: " + minor;
+        String medicion = Integer.toString(minor);
         textView.setText(medicion);
 
     } // ()
