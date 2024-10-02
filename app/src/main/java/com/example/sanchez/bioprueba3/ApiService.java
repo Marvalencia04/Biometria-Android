@@ -14,5 +14,5 @@ public interface ApiService {
 
     // Define el endpoint para enviar datos
     @POST("/api/gases")  // Cambiar a la ruta correcta
-    Call<Dato> subirDato(@Body Dato dato); // Cambiar Void a Dato para reflejar la respuesta
+    Call<Dato> subirDato(@Body Dato dato);
 }

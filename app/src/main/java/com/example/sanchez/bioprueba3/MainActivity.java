@@ -21,7 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 // ------------------------------------------------------------------
@@ -376,11 +379,11 @@ public class MainActivity extends AppCompatActivity {
     // --------------------------------------------------------------
     public void SubirDato(View v) {
         // Crea el objeto Dato que deseas subir
-        Dato dato = new Dato("valorMinor", "otroCampo"); // Cambia estos valores según lo que necesites
-        String responseMessage = Conexion.SubirDato(dato);
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()); // La hora actual
+        String valor = textView.getText().toString(); // El valor del TextView
 
-        // Cambia el TextView para mostrar la respuesta
-        conexionView.setText(responseMessage);
+        Dato dato = new Dato("H2O",Double.parseDouble(valor), currentTime,"Mi casa" ); // Cambia estos valores según lo que necesites
+        Conexion.SubirDato(dato);
     }
     // --------------------------------------------------------------
     // --------------------------------------------------------------

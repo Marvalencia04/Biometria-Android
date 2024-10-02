@@ -11,7 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SubidaDato {
 
-    private static final String BASE_URL = "http://192.168.1.22:4000/";
+    //private static final String BASE_URL = "http://192.168.1.22:4000/";
+    //private static final String BASE_URL = "http://10.236.35.77:4000/";
+    //private static final String BASE_URL = "http://host.docker.internal:4000/";
+    private static final String BASE_URL = "http://192.168.75.193:4000/";
     private ApiService apiService;
     private Dato dato; // Variable para almacenar el dato que se va a subir
 
@@ -28,34 +31,27 @@ public class SubidaDato {
     }
 
     // Método para subir un dato
-    public String SubirDato(Dato dato) {
-        this.dato = dato; // Almacenar el dato
-
-        // Realiza la llamada asíncrona
-        final String[] responseMessage = {null}; // Array para almacenar el mensaje de respuesta
-
+    public void SubirDato(Dato dato) {
         Call<Dato> call = apiService.subirDato(dato);
+
+        // Ejecutar la petición de manera asíncrona
         call.enqueue(new Callback<Dato>() {
             @Override
             public void onResponse(Call<Dato> call, Response<Dato> response) {
                 if (response.isSuccessful()) {
-                    Log.d("SubidaDato", "Dato enviado correctamente: " + dato.toString());
-                    responseMessage[0] = "Dato enviado correctamente.";
+                    Log.d("SubidaDato", "Dato enviado correctamente.");
                 } else {
                     Log.e("SubidaDato", "Error en la respuesta: " + response.code());
-                    responseMessage[0] = "Error en la respuesta: " + response.code();
                 }
             }
 
             @Override
             public void onFailure(Call<Dato> call, Throwable t) {
                 Log.e("SubidaDato", "Error en la petición: " + t.getMessage());
-                responseMessage[0] = "Error en la petición: " + t.getMessage();
             }
         });
-
-        return responseMessage[0]; // Retorna el mensaje de respuesta
     }
+
 
     // Método para comprobar la conexión
     public String ComprobarConexion() {
