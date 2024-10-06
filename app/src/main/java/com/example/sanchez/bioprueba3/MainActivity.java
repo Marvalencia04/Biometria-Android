@@ -27,32 +27,33 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-// ------------------------------------------------------------------
-// ------------------------------------------------------------------
+/**
+ * @brief Clase principal que maneja la interfaz de usuario y el escaneo de dispositivos BTLE.
+ */
 
 public class MainActivity extends AppCompatActivity {
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    // Etiqueta para el registro de logs
     private static final String ETIQUETA_LOG = ">>>>";
-
+    // Código de petición de permisos
     private static final int CODIGO_PETICION_PERMISOS = 11223344;
-
+    // Elementos de la interfaz gráfica
     private TextView textView;
     private TextView conexionView;
     private SubidaDato Conexion;
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    // Escáner de Bluetooth
     private BluetoothLeScanner elEscanner;
-
+    // Callback para manejar los resultados del escaneo de dispositivos BTLE
     private ScanCallback callbackDelEscaneo = null;
 
 
 
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Busca todos los dispositivos BTLE cercanos.
+     * @throws SecurityException si los permisos necesarios no están otorgados.
+     */
     private void buscarTodosLosDispositivosBTLE() {
         Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empieza ");
 
@@ -83,23 +84,20 @@ public class MainActivity extends AppCompatActivity {
         };
 
         Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empezamos a escanear ");
-
+        // Verificar permisos antes de iniciar el escaneo
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        // Iniciar el escaneo de dispositivos
         this.elEscanner.startScan(this.callbackDelEscaneo);
 
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Muestra la información de un dispositivo BTLE detectado.
+     * @param resultado Objeto que contiene los datos del dispositivo.
+     * @throws SecurityException si los permisos para conectar no están otorgados.
+     */
     private void mostrarInformacionDispositivoBTLE(ScanResult resultado) {
 
         BluetoothDevice bluetoothDevice = resultado.getDevice();
@@ -110,13 +108,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " ****** DISPOSITIVO DETECTADO BTLE ****************** ");
         Log.d(ETIQUETA_LOG, " ****************************************************");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         Log.d(ETIQUETA_LOG, " nombre = " + bluetoothDevice.getName());
@@ -167,8 +158,11 @@ public class MainActivity extends AppCompatActivity {
 
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Busca un dispositivo específico BTLE por su UUID.
+     * @param dispositivoBuscado UUID del dispositivo a buscar.
+     * @throws SecurityException si los permisos no están otorgados.
+     */
     private void buscarEsteDispositivoBTLE(final String dispositivoBuscado) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
 
@@ -213,20 +207,15 @@ public class MainActivity extends AppCompatActivity {
         //      + " -> " + Utilidades.stringToUUID( dispositivoBuscado ) );
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         this.elEscanner.startScan(this.callbackDelEscaneo);
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Detiene el escaneo de dispositivos BTLE.
+     * @throws SecurityException si no se tienen permisos necesarios.
+     */
     private void detenerBusquedaDispositivosBTLE() {
 
         if (this.callbackDelEscaneo == null) {
@@ -234,13 +223,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         this.elEscanner.stopScan(this.callbackDelEscaneo);
@@ -249,8 +231,11 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Método ejecutado al crear la actividad principal.
+     * Inicializa la interfaz gráfica y el escáner Bluetooth.
+     * @param savedInstanceState Estado previamente guardado de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -269,15 +254,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Acción asociada al botón de buscar dispositivos BTLE.
+     * @param v Vista que activa este evento.
+     */
     public void botonBuscarDispositivosBTLEPulsado(View v) {
         Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado");
         this.buscarTodosLosDispositivosBTLE();
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Acción asociada al botón de buscar un dispositivo BTLE específico.
+     * @param v Vista que activa este evento.
+     */
     public void botonBuscarNuestroDispositivoBTLEPulsado(View v) {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado");
         //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
@@ -287,15 +276,18 @@ public class MainActivity extends AppCompatActivity {
 
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Acción asociada al botón de detener el escaneo.
+     * @param v Vista que activa este evento.
+     */
     public void botonDetenerBusquedaDispositivosBTLEPulsado(View v) {
         Log.d(ETIQUETA_LOG, " boton detener busqueda dispositivos BTLE Pulsado");
         this.detenerBusquedaDispositivosBTLE();
     } // ()
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Inicializa el adaptador Bluetooth y solicita permisos si es necesario.
+     */
     private void inicializarBlueTooth() {
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
 
@@ -304,13 +296,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): habilitamos adaptador BT ");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         bta.enable();
@@ -350,8 +335,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Método para gestionar la respuesta a las solicitudes de permisos.
+     * @param requestCode Código de solicitud.
+     * @param permissions Permisos solicitados.
+     * @param grantResults Resultados de la solicitud.
+     */
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
         super.onRequestPermissionsResult( requestCode, permissions, grantResults);
@@ -372,11 +361,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return;
         }
-        // Other 'case' lines to check for other
-        // permissions this app might request.
     } // ()
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Acción asociada al botón de subir un dato al servidor.
+     * @param v Vista que activa este evento.
+     */
     public void SubirDato(View v) {
         // Crea el objeto Dato que deseas subir
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()); // La hora actual
@@ -385,8 +374,10 @@ public class MainActivity extends AppCompatActivity {
         Dato dato = new Dato("H2O",Double.parseDouble(valor), currentTime,"Mi casa" ); // Cambia estos valores según lo que necesites
         Conexion.SubirDato(dato);
     }
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
+    /**
+     * @brief Acción asociada al botón de comprobar la conexion con el servidor.
+     * @param v Vista que activa el evento del botón.
+     */
     public void ComprobarConexion(View v) {
         String responseMessage = Conexion.ComprobarConexion();
 
@@ -395,7 +386,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 } // class
-// --------------------------------------------------------------
-// --------------------------------------------------------------
 // --------------------------------------------------------------
 // --------------------------------------------------------------
