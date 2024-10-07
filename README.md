@@ -10,7 +10,7 @@ En muchos entornos, es crucial monitorear la calidad del aire y los niveles de d
 ## Instrucciones de Instalación
 
 1. Clona el repositorio:
-git clone https://github.com/tu_usuariotu_repositorio.git
+git clone https://github.com/Marvalencia04/Biometria-Android
 cd tu_repositorio
 
 2. Abre el proyecto en tu IDE preferido (por ejemplo, Android Studio).

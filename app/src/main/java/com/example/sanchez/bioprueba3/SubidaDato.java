@@ -79,7 +79,7 @@ public class SubidaDato {
      *
      * Este método realiza una petición GET para verificar si el servidor está en línea.
      *
-     * @return Mensaje que indica si la conexión fue exitosa o fallida.
+     * @return Mensaje que indica si la conexión fue exito+sa o fallida.
      */
     public String ComprobarConexion() {
         final String[] responseMessage = {null};  // Array para almacenar el mensaje de respuesta
